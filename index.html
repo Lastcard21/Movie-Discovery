@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Movie Discovery</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>🎬 Movie Discovery</h1>
+
+        <form id="searchForm">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for a movie..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+        </form>
+    </header>
+
+
+    <main>
+
+        <section id="featured">
+            <h2>Featured</h2>
+
+            <div id="featuredMovie"></div>
+        </section>
+
+
+        <section>
+            <h2>🔥 Popular Movies</h2>
+
+            <div id="popularMovies"></div>
+        </section>
+
+
+        <section>
+            <h2>⭐ Top Rated</h2>
+
+            <div id="topRatedMovies"></div>
+        </section>
+
+
+        <section>
+            <h2>🔎 Search Results</h2>
+
+            <div id="searchResults"></div>
+        </section>
+
+    </main>
+
+
+    <p id="loading"></p>
+
+    <p id="error"></p>
+
+
+    <script
+        type="module"
+        src="./js/main.js"
+    ></script>
+
+</body>
+
+</html>

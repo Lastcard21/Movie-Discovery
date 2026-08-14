@@ -1,0 +1,465 @@
+/* ==========================================================================
+   1. Design System & CSS Variables
+   ========================================================================== */
+:root {
+  --bg-main: #141414;
+  --bg-surface: #181818;
+  --bg-card: #202020;
+  --bg-glass: rgba(20, 20, 20, 0.85);
+
+  --accent-red: #e50914;
+  --accent-red-hover: #f40612;
+  --accent-red-glow: rgba(229, 9, 20, 0.35);
+
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 16px 32px rgba(0, 0, 0, 0.8);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  --font-stack: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ==========================================================================
+   2. Reset & Base Setup
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-stack);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(229, 9, 20, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0b0b0b 0%, var(--bg-main) 100%);
+  background-attachment: fixed;
+}
+
+/* Custom Netflix-style Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
+}
+
+/* ==========================================================================
+   3. Header & Navigation
+   ========================================================================== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4%;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+  transition: var(--transition-smooth);
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 40%, var(--accent-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Search Form */
+#searchForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-glass);
+  padding: 0.35rem 0.5rem 0.35rem 1rem;
+  border-radius: var(--radius-pill);
+  transition: var(--transition-smooth);
+  width: 100%;
+  max-width: 380px;
+}
+
+#searchForm:focus-within {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 16px var(--accent-red-glow);
+  background: rgba(0, 0, 0, 0.85);
+}
+
+#searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+#searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+#searchForm button {
+  background: var(--accent-red);
+  color: #ffffff;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+}
+
+#searchForm button:hover {
+  background: var(--accent-red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.6);
+}
+
+#searchForm button:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   4. Main Content & Sections
+   ========================================================================== */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 1.5rem 4% 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   5. Hero / Featured Movie Banner
+   ========================================================================== */
+#featured {
+  margin-top: 0.5rem;
+}
+
+#featuredMovie {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-surface);
+  background-size: cover;
+  background-position: center top;
+  box-shadow: var(--shadow-hover);
+  display: flex;
+  align-items: flex-end;
+  border: 1px solid var(--border-glass);
+}
+
+/* Cinematic Dark Gradient Mask for Hero */
+#featuredMovie::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 8, 8, 0.95) 0%,
+            rgba(8, 8, 8, 0.75) 35%,
+            rgba(8, 8, 8, 0.35) 70%,
+            rgba(8, 8, 8, 0.1) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(8, 8, 8, 0.85) 0%,
+            transparent 60%
+        );
+
+    z-index: 1;
+}
+
+/* Content inside the Featured Banner */
+#featuredMovie > * {
+  position: relative;
+  z-index: 2;
+  padding: 2.5rem;
+  max-width: 650px;
+}
+
+#featuredMovie h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+#featuredMovie p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   6. Movie Rows & Horizontal Carousels
+   ========================================================================== */
+#popularMovies,
+#topRatedMovies {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 0.75rem 0.25rem 1.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+/* Search Results Grid (Responsive Wrap) */
+#searchResults {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+/* Universal Movie Card Styling (works dynamically for items inserted by JS) */
+.movie-card,
+#popularMovies > div,
+#topRatedMovies > div,
+#searchResults > div {
+  flex: 0 0 190px;
+  scroll-snap-align: start;
+  position: relative;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid transparent;
+}
+
+/* Poster Aspect Ratio */
+.movie-card img,
+#popularMovies img,
+#topRatedMovies img,
+#searchResults img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background-color: var(--bg-card);
+  transition: transform 0.4s ease;
+}
+
+/* Netflix Hover Scale Effect */
+.movie-card:hover,
+#popularMovies > div:hover,
+#topRatedMovies > div:hover,
+#searchResults > div:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+.movie-card:hover img,
+#popularMovies > div:hover img,
+#topRatedMovies > div:hover img,
+#searchResults > div:hover img {
+  transform: scale(1.05);
+}
+
+/* Movie Card Title & Meta Info */
+.movie-info,
+.movie-card h3,
+#popularMovies h3,
+#topRatedMovies h3,
+#searchResults h3 {
+  padding: 0.75rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--bg-surface);
+}
+
+/* ==========================================================================
+   7. Loading & Error Feedback
+   ========================================================================== */
+#loading:not(:empty) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  gap: 0.75rem;
+}
+
+#loading:not(:empty)::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(229, 9, 20, 0.2);
+  border-top-color: var(--accent-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#error:not(:empty) {
+  margin: 1.5rem auto;
+  max-width: 600px;
+  padding: 1rem 1.5rem;
+  background: rgba(229, 9, 20, 0.1);
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  border-radius: var(--radius-md);
+  color: #ff858a;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   8. Responsive Breakpoints
+   ========================================================================== */
+/* Tablets and small laptops (under 992px) */
+@media (max-width: 992px) {
+  #featuredMovie {
+    min-height: 350px;
+  }
+  
+  #featuredMovie h3 {
+    font-size: 2rem;
+  }
+  
+  .movie-card,
+  #popularMovies > div,
+  #topRatedMovies > div {
+    flex: 0 0 160px;
+  }
+}
+
+/* Mobile Devices (under 640px) */
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 0.85rem 4%;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+  }
+
+  #searchForm {
+    max-width: 100%;
+  }
+
+  main {
+    gap: 2rem;
+    padding: 1rem 3% 3rem;
+  }
+
+  #featuredMovie {
+    min-height: 280px;
+  }
+
+  #featuredMovie > * {
+    padding: 1.25rem;
+  }
+
+  #featuredMovie h3 {
+    font-size: 1.4rem;
+  }
+
+  #featuredMovie p {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .movie-card,
+  #popularMovies > div,
+  #topRatedMovies > div {
+    flex: 0 0 135px;
+  }
+
+  #searchResults {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.85rem;
+  }
+}

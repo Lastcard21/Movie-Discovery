@@ -65,3 +65,24 @@ export async function searchMovies(query) {
     }
 
 }
+
+
+export async function getMovieTrailer(movieId) {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+            {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2N2JjOTdkZjM5ODUwNjQ0N2IxNTc4MTdlMWExYmZmMSIsIm5iZiI6MTc4NjYyOTc0Mi44ODk5OTk5LCJzdWIiOiI2YTdkY2U2ZTQ3OWVkM2Q1YjE1Zjg1MTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.iPZZVKMPM96vZa2_j3MrIQcznPlwGYMmGttssjscZjE`
+                }
+            }
+        );
+
+        const movieTrailerData = await response.json();
+
+        return movieTrailerData.results;
+
+    } catch (error) {
+        console.log(error);
+    }
+}

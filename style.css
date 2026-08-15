@@ -394,6 +394,111 @@ section h2 {
   font-size: 0.95rem;
 }
 
+/* trailer button */
+.trailer-btn {
+    margin-top: 15px;
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #e50914;
+    color: white;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.trailer-btn:hover {
+    background: #f40612;
+    transform: translateY(-2px);
+}
+
+.trailer-btn:active {
+    transform: scale(0.97);
+}
+
+
+.trailer-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.88);
+
+    backdrop-filter: blur(8px);
+}
+
+.trailer-modal-content {
+    position: relative;
+
+    width: min(900px, 95vw);
+
+    aspect-ratio: 16 / 9;
+
+    background: #000;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.8);
+}
+
+.trailer-modal-content iframe {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+}
+
+.close-trailer {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    z-index: 10;
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.close-trailer:hover {
+    background: #e50914;
+
+    transform: scale(1.05);
+}
+
 /* ==========================================================================
    8. Responsive Breakpoints
    ========================================================================== */

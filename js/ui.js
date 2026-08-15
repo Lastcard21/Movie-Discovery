@@ -1,3 +1,8 @@
+import { getMovieTrailer } from "./api.js";
+
+
+
+
 export function displayMovies(movies, container) {
     container.innerHTML = "";
 
@@ -33,10 +38,12 @@ export function displayMovies(movies, container) {
 
 export function displayFeaturedMovie(movie, container) {
     container.innerHTML = "";
+
     const backdropUrl =
         `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
 
     container.style.backgroundImage = `url(${backdropUrl})`;
+
     const content = document.createElement("div");
     content.classList.add("featured-content");
 
@@ -56,5 +63,88 @@ export function displayFeaturedMovie(movie, container) {
     overview.textContent = movie.overview;
     content.appendChild(overview);
 
+
+    // WATCH TRAILER BUTTON
+    const trailerButton = document.createElement("button");
+
+    trailerButton.textContent = "▶ Watch Trailer";
+
+    trailerButton.classList.add("trailer-btn");
+
+
+    trailerButton.addEventListener("click", async () => {
+
+        const videos = await getMovieTrailer(movie.id);
+
+        const trailer = videos.find(video =>
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+        );
+
+        if (!trailer) {
+            alert("Trailer not available.");
+            return;
+        }
+
+
+        const modal = document.createElement("div");
+
+        modal.classList.add("trailer-modal");
+
+
+        const modalContent = document.createElement("div");
+
+        modalContent.classList.add("trailer-modal-content");
+
+
+        const closeButton = document.createElement("button");
+
+        closeButton.textContent = "✕";
+
+        closeButton.classList.add("close-trailer");
+
+
+        const iframe = document.createElement("iframe");
+
+        iframe.src =
+            `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+
+        iframe.title = `${movie.title} Trailer`;
+
+        iframe.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+
+        iframe.allowFullscreen = true;
+
+
+        modalContent.appendChild(closeButton);
+
+        modalContent.appendChild(iframe);
+
+        modal.appendChild(modalContent);
+
+        document.body.appendChild(modal);
+
+
+        closeButton.addEventListener("click", () => {
+            modal.remove();
+        });
+
+
+        modal.addEventListener("click", (event) => {
+
+            if (event.target === modal) {
+                modal.remove();
+            }
+
+        });
+
+    });
+
+
+    content.appendChild(trailerButton);
+
+
+    // Add everything to the page
     container.appendChild(content);
 }

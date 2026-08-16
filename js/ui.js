@@ -9,19 +9,27 @@ export function displayMovies(movies, container) {
     movies.forEach(movie => {
         const card = document.createElement("div");
         card.classList.add("movie-card");
-
-        const posterUrl =
-            `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        card.addEventListener("click", () => {
+            displayMovieDetails(movie)
+        })
 
         const poster = document.createElement("img");
 
-        poster.src = posterUrl;
+        if (movie.poster_path) {
+            poster.src =
+                `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        } else {
+            poster.src = "./images/no-poster.jpg";
+        }
+
+        poster.alt = movie.title;
 
         const title = document.createElement("h3");
         title.textContent = movie.title;
 
         const releaseDate = document.createElement("p");
-        releaseDate.textContent = movie.release_date;
+        releaseDate.textContent =
+            movie.release_date || "Release date unavailable";
 
         const rating = document.createElement("p");
         rating.textContent = `⭐ ${movie.vote_average}`;
@@ -39,10 +47,20 @@ export function displayMovies(movies, container) {
 export function displayFeaturedMovie(movie, container) {
     container.innerHTML = "";
 
-    const backdropUrl =
-        `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+    if (movie.backdrop_path) {
 
-    container.style.backgroundImage = `url(${backdropUrl})`;
+        const backdropUrl =
+            `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+
+        container.style.backgroundImage =
+            `url(${backdropUrl})`;
+
+    } else {
+
+        container.style.backgroundImage =
+            "none";
+
+    }
 
     const content = document.createElement("div");
     content.classList.add("featured-content");
@@ -147,4 +165,173 @@ export function displayFeaturedMovie(movie, container) {
 
     // Add everything to the page
     container.appendChild(content);
+}
+
+
+
+
+
+export function displayMovieDetails(movie) {
+
+    const modal = document.createElement("div");
+    modal.classList.add("movie-details-modal");
+
+    const content = document.createElement("div");
+    content.classList.add("movie-details-content");
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "✕";
+    closeButton.classList.add("close-details");
+
+    const poster = document.createElement("img");
+
+    poster.src =
+        `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+    poster.alt = movie.title;
+
+    const info = document.createElement("div");
+    info.classList.add("movie-details-info");
+
+    const title = document.createElement("h2");
+    title.textContent = movie.title;
+
+    const rating = document.createElement("p");
+    rating.textContent =
+        `⭐ ${movie.vote_average.toFixed(1)}`;
+
+    const releaseDate = document.createElement("p");
+    releaseDate.textContent =
+    `Release: ${movie.release_date || "Unavailable"}`;
+
+    const overview = document.createElement("p");
+    overview.textContent =
+    movie.overview || "No description available.";
+
+
+    // WATCH TRAILER BUTTON
+    const trailerButton = document.createElement("button");
+
+    trailerButton.textContent = "▶ Watch Trailer";
+
+    trailerButton.classList.add("trailer-btn");
+
+
+    trailerButton.addEventListener("click", async () => {
+
+        const videos = await getMovieTrailer(movie.id);
+
+        const trailer = videos.find(video =>
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+        );
+
+        if (!trailer) {
+            alert("Trailer not available.");
+            return;
+        }
+
+
+        const trailerModal = document.createElement("div");
+
+        trailerModal.classList.add("trailer-modal");
+
+
+        const trailerContent =
+            document.createElement("div");
+
+        trailerContent.classList.add(
+            "trailer-modal-content"
+        );
+
+
+        const closeTrailer =
+            document.createElement("button");
+
+        closeTrailer.textContent = "✕";
+
+        closeTrailer.classList.add(
+            "close-trailer"
+        );
+
+
+        const iframe =
+            document.createElement("iframe");
+
+        iframe.src =
+            `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+
+        iframe.title =
+            `${movie.title} Trailer`;
+
+        iframe.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+
+        iframe.allowFullscreen = true;
+
+
+        trailerContent.appendChild(closeTrailer);
+
+        trailerContent.appendChild(iframe);
+
+        trailerModal.appendChild(trailerContent);
+
+        document.body.appendChild(trailerModal);
+
+
+        closeTrailer.addEventListener("click", () => {
+            trailerModal.remove();
+        });
+
+
+        trailerModal.addEventListener("click", (event) => {
+
+            if (event.target === trailerModal) {
+                trailerModal.remove();
+            }
+
+        });
+
+    });
+
+
+    // Add elements to movie information
+    info.appendChild(title);
+
+    info.appendChild(rating);
+
+    info.appendChild(releaseDate);
+
+    info.appendChild(overview);
+
+    info.appendChild(trailerButton);
+
+
+    // Add elements to modal
+    content.appendChild(closeButton);
+
+    content.appendChild(poster);
+
+    content.appendChild(info);
+
+    modal.appendChild(content);
+
+    document.body.appendChild(modal);
+
+
+    // Close movie details modal
+    closeButton.addEventListener("click", () => {
+        modal.remove();
+    });
+
+
+    // Close when clicking outside
+    modal.addEventListener("click", (event) => {
+
+        if (event.target === modal) {
+            modal.remove();
+        }
+
+    });
+
 }

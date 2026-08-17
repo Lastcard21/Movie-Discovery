@@ -6,7 +6,9 @@ import {
 
 import {
     displayMovies,
-    displayFeaturedMovie
+    displayFeaturedMovie,
+    displayWatchlist,
+    getWatchlist
 } from "./ui.js";
 
 
@@ -117,6 +119,9 @@ searchForm.addEventListener("submit", async (event) => {
             data.results,
             document.getElementById("searchResults")
         );
+        document.getElementById("searchResults").scrollIntoView({
+            behavior: "smooth"
+        });
 
 
     } catch (error) {
@@ -138,3 +143,9 @@ searchForm.addEventListener("submit", async (event) => {
     }
 
 });
+
+
+displayWatchlist(
+    getWatchlist(),
+    document.getElementById("watchlistMovies")
+);

@@ -41,6 +41,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 130px;
   color-scheme: dark;
 }
 
@@ -98,7 +99,7 @@ header h1 {
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #ffffff 40%, var(--accent-red) 100%);
+  background: linear-gradient(135deg, var(--accent-red) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
@@ -106,6 +107,172 @@ header h1 {
   gap: 0.5rem;
   user-select: none;
   cursor: pointer;
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    padding: 1rem 4%;
+
+    background: rgba(15, 15, 15, 0.92);
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* LOGO */
+
+header h1 {
+    margin: 0;
+
+    font-size: 1.7rem;
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    color: white;
+}
+
+
+/* NAV LINKS */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 1.8rem;
+}
+
+.nav-links a {
+    position: relative;
+
+    color: #b8b8b8;
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: white;
+    transform: translateY(-1px);
+}
+
+
+/* RED UNDERLINE */
+
+.nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -7px;
+
+    width: 0;
+    height: 2px;
+
+    background: #e50914;
+
+    border-radius: 10px;
+
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+
+/* SEARCH FORM */
+
+#searchForm {
+    display: flex;
+    align-items: center;
+
+    gap: 0.5rem;
+}
+
+#searchInput {
+    width: 230px;
+
+    padding: 0.7rem 1rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    color: white;
+
+    outline: none;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#searchInput::placeholder {
+    color: #777;
+}
+
+#searchInput:focus {
+    border-color: #e50914;
+
+    box-shadow:
+        0 0 0 3px rgba(229, 9, 20, 0.12);
+}
+
+
+/* SEARCH BUTTON */
+
+#searchForm button {
+    padding: 0.7rem 1.25rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #e50914;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+}
+
+#searchForm button:hover {
+    background: #f6121d;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 18px rgba(229, 9, 20, 0.35);
 }
 
 /* Search Form */
@@ -351,6 +518,10 @@ section h2 {
   overflow: hidden;
   text-overflow: ellipsis;
   background: var(--bg-surface);
+}
+
+.movie-card p {
+    margin-left: 10px;
 }
 
 /* ==========================================================================
@@ -684,6 +855,40 @@ section h2 {
     font-size: 1rem;
 }
 
+
+
+#watchlistMovies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.watchlist-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.watchlist-card img {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.watchlist-btn {
+    background-color: #970008;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.watchlist-btn:hover {
+    background-color: #b20710;
+}
 @media (max-width: 700px) {
 
     .movie-details-content {
@@ -709,5 +914,74 @@ section h2 {
 
     .movie-details-info h2 {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    header {
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    #searchForm {
+        margin-left: auto;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 0.9rem 1rem;
+
+        gap: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.25rem;
+    }
+
+    .nav-links {
+        order: 3;
+
+        justify-content: flex-start;
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        padding-bottom: 0.3rem;
+
+        scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-links a {
+        white-space: nowrap;
+
+        font-size: 0.85rem;
+    }
+
+    #searchForm {
+        width: 100%;
+    }
+
+    #searchInput {
+        width: 100%;
+    }
+
+    #searchForm button {
+        flex-shrink: 0;
     }
 }

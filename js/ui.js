@@ -1,6 +1,34 @@
 import { getMovieTrailer } from "./api.js";
 
+function addToWatchlist(movie) {
+    let watchlist =
+        JSON.parse(localStorage.getItem("watchlist")) || [];
 
+    const alreadySaved = watchlist.some(
+        savedMovie => savedMovie.id === movie.id
+    );
+
+    if (alreadySaved) {
+        alert("Movie is already in your watchlist.");
+        return;
+    }
+
+    watchlist.push(movie);
+
+    localStorage.setItem(
+        "watchlist",
+        JSON.stringify(watchlist)
+    );
+
+    alert(`${movie.title} added to your watchlist.`);
+
+
+    // Refresh the watchlist on the page
+    displayWatchlist(
+        getWatchlist(),
+        document.getElementById("watchlistMovies")
+    );
+}
 
 
 export function displayMovies(movies, container) {
@@ -12,6 +40,19 @@ export function displayMovies(movies, container) {
         card.addEventListener("click", () => {
             displayMovieDetails(movie)
         })
+
+
+        const watchlistButton = document.createElement("button");
+
+        watchlistButton.textContent = "Add to Watchlist";
+
+        watchlistButton.classList.add("watchlist-btn");
+
+        watchlistButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            addToWatchlist(movie);
+        })
+
 
         const poster = document.createElement("img");
 
@@ -33,15 +74,92 @@ export function displayMovies(movies, container) {
 
         const rating = document.createElement("p");
         rating.textContent = `⭐ ${movie.vote_average}`;
+        
+        releaseDate.classList.add("movie-year");
+        rating.classList.add("movie-rating");
 
         card.appendChild(poster);
         card.appendChild(title);
         card.appendChild(releaseDate);
         card.appendChild(rating);
+        card.appendChild(watchlistButton);
 
         container.appendChild(card);
     });
 }
+
+
+export function getWatchlist() {
+    return JSON.parse(
+        localStorage.getItem("watchlist")
+    ) || [];
+}
+
+export function removeFromWatchlist(movieId) {
+    let watchlist = getWatchlist();
+
+    watchlist = watchlist.filter(
+        movie => movie.id !== movieId
+    );
+
+    localStorage.setItem(
+        "watchlist",
+        JSON.stringify(watchlist)
+    );
+}
+
+
+export function displayWatchlist(movies, container) {
+    container.innerHTML = "";
+
+    if (movies.length === 0) {
+        container.innerHTML = "<p>Your watchlist is empty.</p>";
+        return;
+    }
+
+    movies.forEach(movie => {
+        const card = document.createElement("div");
+        card.classList.add("watchlist-card");
+
+        const poster = document.createElement("img");
+
+        if (movie.poster_path) {
+            poster.src =
+                `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        } else {
+            poster.src = "./images/no-poster.jpg";
+        }
+
+        poster.alt = movie.title;
+
+        const title = document.createElement("h3");
+        title.textContent = movie.title;
+
+        const rating = document.createElement("p");
+        rating.textContent = `⭐ ${movie.vote_average}`;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.classList.add("watchlist-btn");
+
+        removeButton.addEventListener("click", () => {
+            removeFromWatchlist(movie.id);
+            displayWatchlist(
+                getWatchlist(),
+                container
+            );
+        });
+
+        card.appendChild(poster);
+        card.appendChild(title);
+        card.appendChild(rating);
+        card.appendChild(removeButton);
+
+        container.appendChild(card);
+    });
+}
+
+
 
 
 export function displayFeaturedMovie(movie, container) {
@@ -202,11 +320,11 @@ export function displayMovieDetails(movie) {
 
     const releaseDate = document.createElement("p");
     releaseDate.textContent =
-    `Release: ${movie.release_date || "Unavailable"}`;
+        `Release: ${movie.release_date || "Unavailable"}`;
 
     const overview = document.createElement("p");
     overview.textContent =
-    movie.overview || "No description available.";
+        movie.overview || "No description available.";
 
 
     // WATCH TRAILER BUTTON
